@@ -19,3 +19,24 @@ func TestLoadEnv(t *testing.T) {
 		t.Errorf("Не найдена перменная hello: ожидалось \"world\" полученные данные \"%s\", длина: %d", hello, len(hello))
 	}
 }
+
+func TestLoadEnvDop(t *testing.T) {
+	os.Clearenv()
+
+	var answers = map[string]string{
+		"test":     "test",
+		"hello":    "world",
+		"host":     "localhost",
+		"port":     "8080",
+		"password": "",
+		"dbname":   "test",
+	}
+	Load("test/.env", "test/db.env")
+
+	for key, value := range answers {
+		env := os.Getenv(key)
+		if value != env {
+			t.Errorf("Не найдена перменная %s: ожидалось \"%s\" полученные данные \"%s\", длина: %d", key, value, env, len(env))
+		}
+	}
+}
