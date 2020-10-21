@@ -50,11 +50,17 @@ func read(file string) {
 	data, err := ioutil.ReadFile(file)
 	if err != nil {
 		printError(err.Error())
+		return
 	}
 	scanner := bufio.NewScanner(bytes.NewReader(data))
 	for scanner.Scan() {
-		env := strings.Split(scanner.Text(), "=")
+		var line string = scanner.Text()
+		if line[0] == '#' {
+			continue
+		}
+		env := strings.Split(line, "=")
 		if len(env) == 2 {
+			env[1] = strings.Trim(env[1], "\"")
 			err := os.Setenv(env[0], env[1])
 			if err != nil {
 				printError(err.Error())
