@@ -55,8 +55,10 @@ func read(file string) {
 	scanner := bufio.NewScanner(bytes.NewReader(data))
 	for scanner.Scan() {
 		var line string = scanner.Text()
-		if line[0] == '#' {
-			continue
+		if len(line) > 0 {
+			if line[0] == '#' {
+				continue
+			}
 		}
 		env := strings.Split(line, "=")
 		if len(env) == 2 {
